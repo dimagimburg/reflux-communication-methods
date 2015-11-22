@@ -1,16 +1,24 @@
 import Actions from './../Actions/BoardActions';
 
-function getPieceById(list,id){
+function getPieceById(list,id) {
     return _.find(list, function(piece) {
         return piece.id === id;
     });
 }
 
 let Store = Reflux.createStore({
-    listenables: [Actions],
+    listenables: [Actions], // instead of using this.listenToMany(Actions); in the init method
 
     init() {
+        // init stuff called before the component mounted. so if we call here the updateBoard method
+        // nothing will happen in the component because it is not registered yet as a listener, which
+        // is done in the componentDidMount method over the BattleShips.js
+    },
 
+    onChangeStatus(id,newStatus) {
+        let selected = getPieceById(this.board,id);
+        selected.status = newStatus;
+        this.updateBoard(this.board);
     },
 
     getDefaultBoard(boardSize) {
@@ -27,12 +35,6 @@ let Store = Reflux.createStore({
             }
         }
         this.updateBoard(board);
-    },
-
-    onChangeStatus(id,newStatus) {
-        let selected = getPieceById(this.board,id);
-        selected.status = newStatus;
-        this.updateBoard(this.board);
     },
 
     onClearBoard() {
