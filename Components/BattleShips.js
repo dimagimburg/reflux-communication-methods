@@ -2,7 +2,6 @@ import BoardStore from '../Stores/BoardStore';
 import GameBoard from './GameBoard';
 
 let BattleShips = React.createClass({
-    //mixins: [Reflux.ListenerMixin],
 
     getInitialState() {
         return {
