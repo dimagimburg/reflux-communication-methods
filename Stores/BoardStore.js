@@ -1,32 +1,33 @@
 import Actions from './../Actions/BoardActions';
 
-function getPieceById(list,id){
+function getPieceById(list,id) {
     return _.find(list, function(piece) {
         return piece.id === id;
     });
 }
 
+function getDefaultBoard(boardSize) {
+    let board = [];
+    for(let x = 0; x < boardSize; x++){
+        for(let y = 0; y < boardSize; y++){
+            board.push({
+                id: x.toString() + "_" + y.toString(),
+                x: x,
+                y: y,
+                status: 0,
+                type: "board"
+            });
+        }
+    }
+    return board;
+}
+
 let Store = Reflux.createStore({
     listenables: [Actions],
 
-    init() {
-
-    },
-
-    getDefaultBoard(boardSize) {
-        let board = [];
-        for(let x = 0; x < boardSize; x++){
-            for(let y = 0; y < boardSize; y++){
-                board.push({
-                    id: x.toString() + "_" + y.toString(),
-                    x: x,
-                    y: y,
-                    status: 0,
-                    type: "board"
-                });
-            }
-        }
-        this.updateBoard(board);
+    getInitialState() {
+        this.board = getDefaultBoard(5);
+        return this.board;
     },
 
     onChangeStatus(id,newStatus) {
