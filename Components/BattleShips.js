@@ -1,23 +1,20 @@
 import BoardStore from '../Stores/BoardStore';
+import ScoreBoard from './ScoreBoard';
 import GameBoard from './GameBoard';
-
 let BattleShips = React.createClass({
 
-    // COULD USE HERE:  mixins: [Reflux.listenTo(BoardStore,"onBoardChange")],
-    // and then could remove the componentDidMount method and getInitialState method
     mixins: [Reflux.ListenerMixin],
 
     getInitialState() {
         return {
-            board: [] // some dummy empty array so the program won't fail (on mapping undefined)
+            // call for the getter function of the Store
+            board: BoardStore.getBoard()
         };
     },
 
     componentDidMount() {
+        // registeres as a listener for the store
         this.listenTo(BoardStore, this.onBoardChange);
-        // here the default array is created, on the BoardStore
-        // an event is triggered and updates the state in BattleShips
-        BoardStore.getDefaultBoard(5);
     },
 
     onBoardChange(board) {
@@ -29,7 +26,8 @@ let BattleShips = React.createClass({
     render() {
         return (
             <div>
-                <div>Method 3</div>
+                <div>BattleShips Ver 0.0.1</div>
+                <ScoreBoard />
                 <GameBoard board={this.state.board}/>
             </div>
         );
